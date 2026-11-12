@@ -265,6 +265,10 @@ function renderScreen(screen) {
     showScreen.disabled = true;
     if (screenView.getAttribute("src") !== MIRROR_PAGE) screenView.src = MIRROR_PAGE;
     screenView.hidden = false;
+    const compactName = document.querySelector("#compact-device-name");
+    if (compactName && screen.transport) {
+      compactName.textContent = `iPhone (${screen.transport === "wifi" ? "Wi-Fi" : "Cable"})`;
+    }
     return;
   }
 
@@ -480,7 +484,74 @@ const keyboard = window.HandsetKeys.attach({
   enabled: () => window.handsetKeyboardOn && workspace.classList.contains("is-live"),
 });
 
+function setCompact(enable) {
+  const isCompact = document.body.classList.toggle("is-compact", enable);
+  document.documentElement.classList.toggle("is-compact", isCompact);
+  const toggleBtn = document.querySelector("#toggle-compact");
+  const compactBtn = document.querySelector("#compact-btn");
+  if (toggleBtn) {
+    toggleBtn.textContent = isCompact ? "Mở rộng" : "Thu nhỏ";
+    toggleBtn.title = isCompact ? "Mở rộng giao diện" : "Thu nhỏ giao diện";
+  }
+  if (compactBtn) {
+    compactBtn.textContent = isCompact ? "🗖 Mở rộng" : "🗗 Thu nhỏ";
+    compactBtn.title = isCompact ? "Mở rộng giao diện" : "Thu nhỏ giao diện";
+  }
+  const size = isCompact ? { width: 440, height: 890 } : { width: 1280, height: 860 };
+  if (window.electronAPI?.resize) {
+    window.electronAPI.resize(size.width, size.height);
+  }
+  fetch("/api/window/resize", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(size),
+  }).catch(() => {});
+  try {
+    window.resizeTo(size.width, size.height);
+  } catch (_) {}
+}
+
 function wireRemoteControls() {
+  const toggleCompact = () => setCompact(!document.body.classList.contains("is-compact"));
+  document.querySelector("#toggle-compact")?.addEventListener("click", toggleCompact);
+  document.querySelector("#compact-btn")?.addEventListener("click", toggleCompact);
+  document.querySelector("#compact-close")?.addEventListener("click", () => {
+    if (window.electronAPI?.close) window.electronAPI.close();
+    else setCompact(false);
+  });
+  document.querySelector("#compact-min")?.addEventListener("click", () => {
+    if (window.electronAPI?.minimize) window.electronAPI.minimize();
+    else fetch("/api/window/minimize", { method: "POST" }).catch(() => {});
+  });
+  document.querySelector("#compact-expand")?.addEventListener("click", toggleFullscreen);
+  document.querySelector("#compact-settings")?.addEventListener("click", () => setCompact(false));
+  document.querySelector("#compact-mute")?.addEventListener("click", () => mirrorPost("/button", { name: "mute", state: "press" }));
+  document.querySelector("#compact-back")?.addEventListener("click", () => gesture("notifications"));
+  document.querySelector("#compact-home")?.addEventListener("click", () => gesture("home"));
+  document.querySelector("#compact-switcher")?.addEventListener("click", () => gesture("switcher"));
+  document.querySelector("#compact-restart")?.addEventListener("click", () => restartMirror());
+
+  document.querySelector("#win-min")?.addEventListener("click", () => {
+    if (window.electronAPI?.minimize) window.electronAPI.minimize();
+    else fetch("/api/window/minimize", { method: "POST" }).catch(() => {});
+  });
+  document.querySelector("#win-close")?.addEventListener("click", () => {
+    if (window.electronAPI?.close) window.electronAPI.close();
+    else fetch("/api/window/close", { method: "POST" }).catch(() => {});
+  });
+
+  const setupDrag = (el) => {
+    if (!el) return;
+    el.addEventListener("mousedown", (e) => {
+      if (e.target.closest("button, a, input, select, textarea")) return;
+      if (e.button === 0) {
+        fetch("/api/window/drag", { method: "POST" }).catch(() => {});
+      }
+    });
+  };
+  setupDrag(document.querySelector(".bar"));
+  setupDrag(document.querySelector("#compact-bar"));
+
   kbToggle.addEventListener("click", () => setKeyboard(!window.handsetKeyboardOn));
   setKeyboard(true);
   // A focused button would swallow Space and Enter instead of typing them.
@@ -514,3 +585,6 @@ function wireRemoteControls() {
 }
 
 load();
+if (window.electronAPI) {
+  setCompact(true);
+}

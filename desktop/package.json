@@ -1,0 +1,12 @@
+{
+  "name": "pane-desktop",
+  "version": "1.0.0",
+  "description": "Frameless transparent desktop runner for Pane",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "dependencies": {
+    "electron": "^40.8.0"
+  }
+}

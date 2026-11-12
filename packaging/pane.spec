@@ -12,9 +12,9 @@ SHIMS = ROOT / "handset" / "_shims"
 sys.path.insert(0, str(SHIMS))
 os.environ["PYTHONPATH"] = os.pathsep.join(filter(None, [str(SHIMS), os.environ.get("PYTHONPATH")]))
 
-datas = [(str(ROOT / "handset" / "web"), "handset/web")]
+datas = [(str(ROOT / "handset" / "web"), "handset/web"), (str(ROOT / "desktop"), "desktop")]
 binaries = []
-hiddenimports = ["lzfse", "lzss", "handset.server", "handset.screen", "handset.wifi"]
+hiddenimports = ["lzfse", "lzss", "handset.server", "handset.screen", "handset.wifi", "handset.window"]
 
 # pymobiledevice3 imports most services lazily and ships viewer assets,
 # certificates and native helpers, so these are bundled whole.

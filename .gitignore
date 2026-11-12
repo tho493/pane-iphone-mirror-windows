@@ -8,3 +8,8 @@ dist/
 venv/
 .vscode/
 .idea/
+node_modules/
+desktop/node_modules/
+.DS_Store
+Thumbs.db
+

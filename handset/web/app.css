@@ -106,6 +106,12 @@ button:active { transform: scale(0.98); }
   border: 1px solid var(--line);
 }
 
+.ghost-icon {
+  padding: 8px 12px;
+  min-width: 34px;
+  font-weight: 600;
+}
+
 .ghost:hover { background: var(--surface-hover); }
 
 .primary {
@@ -194,6 +200,7 @@ button:active { transform: scale(0.98); }
 }
 
 .iphone.live .placeholder { display: none; }
+.iphone.live .iphone-notch { display: none; }
 
 .iphone-rim {
   position: absolute;
@@ -202,10 +209,7 @@ button:active { transform: scale(0.98); }
   border-radius: calc(var(--h) * 0.074);
   background:
     linear-gradient(90deg, #5b5d62 0%, #c9cbd0 6%, #8e9096 14%, #6a6c71 50%, #8e9096 86%, #c9cbd0 94%, #5b5d62 100%);
-  box-shadow:
-    0 0 0 1px rgba(0, 0, 0, 0.6),
-    0 30px 80px rgba(0, 0, 0, 0.65),
-    0 8px 24px rgba(0, 0, 0, 0.45);
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.15);
 }
 
 .iphone-bezel {
@@ -669,3 +673,172 @@ button:active { transform: scale(0.98); }
 }
 
 .foot p { margin: 0; }
+
+/* Compact mode */
+.compact-bar {
+  display: none;
+}
+
+html.is-compact,
+body.is-compact {
+  background: transparent !important;
+  background-image: none !important;
+  overflow: hidden;
+}
+
+body.is-compact .app {
+  min-height: 100vh;
+  background: transparent !important;
+  justify-content: center;
+  align-items: center;
+}
+
+body.is-compact .bar,
+body.is-compact .control-pane,
+body.is-compact .foot,
+body.is-compact #run-guide,
+body.is-compact .stage-meta,
+body.is-compact .stage-note,
+body.is-compact .iphone-key {
+  display: none !important;
+}
+
+body.is-compact .workspace {
+  padding: 6px 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background: transparent !important;
+}
+
+body.is-compact .mirror-split {
+  width: auto;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+body.is-compact .mirror-pane {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+}
+
+body.is-compact .compact-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  width: calc(var(--h) * (71.5 / 146.7));
+  padding: 5px 12px;
+  margin-bottom: 8px;
+  background: #1c1c1f;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 999px;
+  box-shadow: none;
+  user-select: none;
+  z-index: 10;
+}
+
+.compact-traffic {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.traffic-dot {
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  transition: transform 0.1s, filter 0.15s;
+}
+
+.traffic-dot.dot-red { background: #ff5f56; }
+.traffic-dot.dot-yellow { background: #ffbd2e; }
+.traffic-dot.dot-green { background: #27c93f; }
+
+.traffic-dot:hover {
+  filter: brightness(1.2);
+  transform: scale(1.1);
+}
+
+.compact-title {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  color: #e1e1e6;
+  white-space: nowrap;
+}
+
+.compact-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #32d74b;
+  box-shadow: 0 0 6px rgba(50, 215, 75, 0.7);
+}
+
+.compact-actions {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.compact-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px 6px;
+  border-radius: 6px;
+  background: transparent;
+  color: #9d9da6;
+  border: none;
+  cursor: pointer;
+  transition: color 0.15s, background 0.15s;
+}
+
+.compact-btn:hover {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.12);
+}
+
+body.is-compact .iphone {
+  --h: clamp(400px, calc(100dvh - 60px), 940px);
+}
+
+body.is-compact .iphone-rim {
+  background: #1c1c1e;
+  padding: 3px;
+  border-radius: calc(var(--h) * 0.058);
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.15);
+}
+
+body.is-compact .iphone-bezel {
+  padding: 2px;
+  background: #000;
+  border-radius: calc(var(--h) * 0.055);
+  box-shadow: none;
+}
+
+body.is-compact .iphone-screen {
+  border-radius: calc(var(--h) * 0.052);
+}
+
+.pywebview-drag-region {
+  -webkit-app-region: drag;
+}
+
+.pywebview-drag-region button,
+.pywebview-drag-region a,
+.pywebview-drag-region input {
+  -webkit-app-region: no-drag;
+}

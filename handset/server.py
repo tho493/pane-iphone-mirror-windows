@@ -12,6 +12,7 @@ from handset.device import read_handset, snapshot
 from handset.mux import MuxError
 from handset.screen import restart_screen, screen_status, start_screen
 from handset.wifi import pair_for_wifi, wifi_paired_udids
+from handset.window import window_action
 
 ROOT = Path(__file__).resolve().parent / "web"
 HOST = "127.0.0.1"
@@ -65,6 +66,13 @@ class Handler(BaseHTTPRequestHandler):
         udid = payload.get("udid") if isinstance(payload.get("udid"), str) else None
         if path == "/api/screen/restart":
             self._json(restart_screen(udid))
+            return
+        if path.startswith("/api/window/"):
+            action = path.removeprefix("/api/window/")
+            w = int(payload.get("width") or 0)
+            h = int(payload.get("height") or 0)
+            ok = window_action(action, w, h)
+            self._json({"ok": ok})
             return
         if path == "/api/wifi/pair":
             if not udid:

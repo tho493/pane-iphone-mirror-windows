@@ -17,10 +17,34 @@ import webbrowser
 from pathlib import Path
 
 from handset.server import HOST, PORT, Handler, SingleServer
+from handset.window import start_caption_stripper
 
 PORT = int(os.environ.get("PANE_PORT", PORT))
 URL = f"http://{HOST}:{PORT}/"
 DATA_DIR = Path(os.environ.get("LOCALAPPDATA", Path.home())) / "Pane"
+
+
+def _find_electron() -> tuple[Path, Path] | None:
+    candidates = []
+    if getattr(sys, "frozen", False) and hasattr(sys, "_MEIPASS"):
+        candidates.append(Path(sys._MEIPASS))
+    candidates.extend(
+        [
+            Path(sys.executable).resolve().parent,
+            Path(__file__).resolve().parent.parent,
+            Path(sys.executable).resolve().parent.parent,
+            Path.cwd(),
+        ]
+    )
+    for base in candidates:
+        desktop_dir = base / "desktop"
+        exe = desktop_dir / "node_modules" / "electron" / "dist" / "electron.exe"
+        if exe.is_file() and desktop_dir.is_dir():
+            return exe, desktop_dir
+        cmd = desktop_dir / "node_modules" / ".bin" / "electron.cmd"
+        if cmd.is_file() and desktop_dir.is_dir():
+            return cmd, desktop_dir
+    return None
 
 BROWSERS = (
     Path(os.environ.get("ProgramFiles", r"C:\Program Files")) / "Google/Chrome/Application/chrome.exe",
@@ -50,11 +74,15 @@ def _already_running() -> bool:
 
 
 def _open_window() -> subprocess.Popen | None:
+    electron_target = _find_electron()
+    if electron_target:
+        runner, app_dir = electron_target
+        return subprocess.Popen([str(runner), str(app_dir)])
     for browser in BROWSERS:
         if browser.is_file():
             # A dedicated profile makes this its own process, so we can tell
             # when the user closes the window.
-            return subprocess.Popen(
+            proc = subprocess.Popen(
                 [
                     str(browser),
                     f"--app={URL}",
@@ -64,6 +92,8 @@ def _open_window() -> subprocess.Popen | None:
                     "--no-default-browser-check",
                 ]
             )
+            start_caption_stripper()
+            return proc
     webbrowser.open(URL)
     return None
 
