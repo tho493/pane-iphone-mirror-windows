@@ -46,8 +46,9 @@
               <span id="compact-device-name">iPhone (Wi-Fi)</span>
             </div>
             <div class="compact-actions">
-              <button type="button" class="compact-btn" id="compact-mute" title="Mute (Âm lượng)">
-                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>
+              <button type="button" class="compact-btn is-muted" id="compact-mute" title="Âm thanh (AirPlay)">
+                <svg class="icon-mute" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><line x1="23" y1="9" x2="17" y2="15"></line><line x1="17" y1="9" x2="23" y2="15"></line></svg>
+                <svg class="icon-sound" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display: none;"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path><path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path></svg>
               </button>
               <button type="button" class="compact-btn" id="compact-back" title="Thông báo (Notifications)">
                 <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 14 4 9l5-5"/><path d="M4 9h10.5a5.5 5.5 0 0 1 5.5 5.5v0a5.5 5.5 0 0 1-5.5 5.5H11"/></svg>
@@ -64,6 +65,30 @@
               <button type="button" class="compact-btn" id="compact-settings" title="Mở rộng giao diện">
                 <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
               </button>
+            </div>
+          </div>
+
+          <div class="audio-popup" id="audio-popup" hidden>
+            <div class="audio-popup-content">
+              <div class="audio-popup-header">
+                <span class="audio-popup-title">🔊 Phát âm thanh sang PC</span>
+                <button type="button" class="audio-popup-close" id="audio-popup-close">✕</button>
+              </div>
+              <div class="audio-popup-body">
+                <div class="audio-step">
+                  <span class="step-num">1</span>
+                  <span>Vuốt mở <strong>Trung tâm điều khiển</strong> trên iPhone.</span>
+                </div>
+                <div class="audio-step">
+                  <span class="step-num">2</span>
+                  <span>Chạm vào biểu tượng <strong>AirPlay</strong> ở ô phát nhạc.</span>
+                </div>
+                <div class="audio-step">
+                  <span class="step-num">3</span>
+                  <span>Chọn <strong>Pane Audio</strong> làm đầu ra âm thanh.</span>
+                </div>
+              </div>
+              <button type="button" class="audio-popup-btn" id="audio-popup-ok">Đã hiểu</button>
             </div>
           </div>
 

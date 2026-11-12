@@ -29,6 +29,8 @@ It is an alternative to paid tools such as ApowerMirror, LonelyScreen, Reflector
 ## Features
 
 - 📱 **Live iPhone screen mirroring on Windows**: low-latency HEVC (H.265) video decoded in hardware.
+- 🍏 **macOS iPhone Mirroring style**: frameless, 100% transparent desktop window with sleek floating controls and traffic dots.
+- 🔊 **Built-in AirPlay Audio**: embedded AirPlay audio receiver ("Pane Audio") streams game, music and video audio directly to your PC speakers.
 - 🖱️ **Control the iPhone with your mouse**: tap, long-press, drag and swipe directly on the mirrored screen.
 - ⌨️ **Type on your iPhone with the PC keyboard**: real keystrokes, including Ctrl+C / Ctrl+V / Ctrl+A / Ctrl+Z mapped to ⌘ shortcuts.
 - 📶 **Wireless mirroring over Wi-Fi**: pair once over USB, then go cable-free on the same network.
@@ -56,6 +58,13 @@ It is an alternative to paid tools such as ApowerMirror, LonelyScreen, Reflector
 
 > Tip: if the iPhone isn't found over Wi-Fi, set the Windows network profile to **Private** and make sure the router doesn't isolate wireless clients.
 
+### Audio Streaming (AirPlay)
+
+Pane embeds a lightweight AirPlay Audio receiver ("Pane Audio") that starts automatically:
+1. Open the **Control Center** on your iPhone.
+2. Tap the **AirPlay** icon on the music player card.
+3. Select **Pane Audio** to output music, YouTube and game sound to your PC speakers.
+
 ## Controls
 
 | Action on PC | Result on iPhone |
@@ -77,7 +86,7 @@ It is an alternative to paid tools such as ApowerMirror, LonelyScreen, Reflector
 ## Run from source
 
 ```powershell
-git clone https://github.com/teyboxv1/pane-iphone-mirror-windows.git
+git clone https://github.com/tho493/pane-iphone-mirror-windows.git
 cd pane-iphone-mirror-windows
 pip install -r requirements.txt
 python -m handset.server      # then open http://127.0.0.1:8765

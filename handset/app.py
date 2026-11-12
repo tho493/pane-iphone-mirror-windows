@@ -16,6 +16,7 @@ import time
 import webbrowser
 from pathlib import Path
 
+from handset.airplay import start_airplay_receiver, stop_airplay_receiver
 from handset.server import HOST, PORT, Handler, SingleServer
 from handset.window import start_caption_stripper
 
@@ -108,12 +109,16 @@ def main() -> None:
     threading.Thread(target=server.serve_forever, name="pane-server", daemon=True).start()
     logging.info("Pane listening on %s", URL)
 
+    # Automatically start embedded AirPlay audio receiver
+    start_airplay_receiver()
+
     window = _open_window()
     if window is None:
         # No Chrome or Edge: the page is in the default browser; keep serving.
         while True:
             time.sleep(3600)
     window.wait()
+    stop_airplay_receiver()
     server.shutdown()
     os._exit(0)
 

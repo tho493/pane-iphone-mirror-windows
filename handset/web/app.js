@@ -525,7 +525,45 @@ function wireRemoteControls() {
   });
   document.querySelector("#compact-expand")?.addEventListener("click", toggleFullscreen);
   document.querySelector("#compact-settings")?.addEventListener("click", () => setCompact(false));
-  document.querySelector("#compact-mute")?.addEventListener("click", () => mirrorPost("/button", { name: "mute", state: "press" }));
+
+  const audioPopup = document.querySelector("#audio-popup");
+  const compactMute = document.querySelector("#compact-mute");
+  const closePopup = () => {
+    if (audioPopup) audioPopup.hidden = true;
+  };
+
+  compactMute?.addEventListener("click", (e) => {
+    e.stopPropagation();
+    if (audioPopup) {
+      audioPopup.hidden = !audioPopup.hidden;
+    }
+  });
+
+  document.querySelector("#audio-popup-close")?.addEventListener("click", closePopup);
+  document.querySelector("#audio-popup-ok")?.addEventListener("click", closePopup);
+  document.addEventListener("click", (e) => {
+    if (audioPopup && !audioPopup.hidden && !e.target.closest("#audio-popup, #compact-mute")) {
+      closePopup();
+    }
+  });
+
+  // Poll AirPlay connection status to update audio icon
+  const updateAirPlayStatus = async () => {
+    try {
+      const res = await fetch("/api/airplay/status");
+      const data = await res.json();
+      if (data.connected) {
+        compactMute?.classList.add("is-connected");
+        if (compactMute) compactMute.title = "Âm thanh: Đang phát qua Pane Audio";
+      } else {
+        compactMute?.classList.remove("is-connected");
+        if (compactMute) compactMute.title = "Chưa kết nối âm thanh (Bấm để xem hướng dẫn)";
+      }
+    } catch (_) {}
+  };
+  setInterval(updateAirPlayStatus, 2500);
+  updateAirPlayStatus();
+
   document.querySelector("#compact-back")?.addEventListener("click", () => gesture("notifications"));
   document.querySelector("#compact-home")?.addEventListener("click", () => gesture("home"));
   document.querySelector("#compact-switcher")?.addEventListener("click", () => gesture("switcher"));

@@ -41,6 +41,10 @@ class Handler(BaseHTTPRequestHandler):
         if path == "/api/screen":
             self._json(screen_status())
             return
+        if path == "/api/airplay/status":
+            from handset.airplay import is_airplay_connected
+            self._json({"connected": is_airplay_connected()})
+            return
         if path.startswith("/api/devices/"):
             udid = unquote(path.removeprefix("/api/devices/")).strip("/")
             if not udid or "/" in udid:
